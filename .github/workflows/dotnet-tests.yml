@@ -24,10 +24,10 @@ jobs:
         dotnet-version: 8.0.x
 
     - name: Restore dependencies
-      run: dotnet restore SE/StringCalculatorApp/StringCalculatorApp.csproj
+      run: dotnet restore 
 
     - name: Build solution
-      run: dotnet build SE/StringCalculatorApp/StringCalculatorApp.csproj --configuration ${{ matrix.configuration }}
+      run: dotnet build --configuration ${{ matrix.configuration }} --no-restore
 
     - name: Run tests
-      run: dotnet test SE/StringCalculatorTests/StringCalculatorTests.csproj --configuration ${{ matrix.configuration }} --no-build --verbosity normal
+      run: dotnet test --configuration ${{ matrix.configuration }} --no-restore --verbosity normal
