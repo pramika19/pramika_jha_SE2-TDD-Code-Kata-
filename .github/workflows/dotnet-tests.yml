@@ -1,0 +1,33 @@
+name: .NET 8 CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: windows-latest
+
+    strategy:
+      matrix:
+        configuration: [Debug, Release]
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+
+    - name: Restore dependencies
+      run: dotnet restore SE/StringCalculatorApp/StringCalculatorApp.csproj
+
+    - name: Build solution
+      run: dotnet build SE/StringCalculatorApp/StringCalculatorApp.csproj --configuration ${{ matrix.configuration }}
+
+    - name: Run tests
+      run: dotnet test SE/StringCalculatorTests/StringCalculatorTests.csproj --configuration ${{ matrix.configuration }} --no-build --verbosity normal
